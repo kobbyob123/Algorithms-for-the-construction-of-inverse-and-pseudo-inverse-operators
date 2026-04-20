@@ -13,6 +13,3 @@ Audio Inpainting/benchmarks/ltfat-2.6.0/
 
 # ignore json files
 *.json
-
-# ignore yourself
-.gitignore
