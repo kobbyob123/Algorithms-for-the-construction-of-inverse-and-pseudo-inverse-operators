@@ -2,7 +2,8 @@
 *.png
 
 # Ignore help folders
-*.claude
-clauded
+.claude/
+clauded/
 
-% ignore .fig files
+# ignore .fig files
+*.fig
