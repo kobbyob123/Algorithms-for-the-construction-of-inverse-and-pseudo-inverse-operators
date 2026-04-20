@@ -22,7 +22,7 @@ The primary goal is to address the "bottleneck" of large matrix inversions in si
 * `/audio_inpainting`: Application-specific code for signal reconstruction.
 * `/data`: Sample corrupted audio files and test matrices (if applicable).... 
 -->
-* `/algorithms`: Core implementation of the iterative algorithms (MATLAB)
+* under construction!
 
 ## 🚀 Getting Started
 ### Prerequisites
