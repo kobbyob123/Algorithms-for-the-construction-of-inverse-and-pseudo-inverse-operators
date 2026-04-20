@@ -1,0 +1,6 @@
+# ignore pngs
+*.png
+
+# Ignore help folders
+*.claude
+clauded
