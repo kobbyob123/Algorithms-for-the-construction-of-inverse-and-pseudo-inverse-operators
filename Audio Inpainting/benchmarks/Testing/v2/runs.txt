@@ -1,0 +1,79 @@
+run 1:
+----------------------------------------------------------------------------------------------
+=== Sub-experiment A: maxit sweep ===
+Running backslash and lsmr_op at each maxit value.
+
+maxit    | SDR_bsl(dB)  | SDR_lsmr(dB) | diff(dB)    
+----------------------------------------------------
+  AM iter 1: itnlim hit in 0/393 LSMR frames (avg itn=227.4, max itn=255)
+1        | 0.2802       | 0.2802       | 0.0000      
+  AM iter 1: itnlim hit in 0/393 LSMR frames (avg itn=227.4, max itn=255)
+  AM iter 2: itnlim hit in 0/278 LSMR frames (avg itn=1336.5, max itn=2000)
+2        | 10.0264      | 10.0264      | 0.0000      
+  AM iter 1: itnlim hit in 0/393 LSMR frames (avg itn=227.4, max itn=255)
+  AM iter 2: itnlim hit in 0/278 LSMR frames (avg itn=1336.5, max itn=2000)
+  AM iter 3: itnlim hit in 0/150 LSMR frames (avg itn=1550.5, max itn=2000)
+  AM iter 4: itnlim hit in 0/102 LSMR frames (avg itn=1653.7, max itn=2000)
+  AM iter 5: itnlim hit in 0/90 LSMR frames (avg itn=1659.1, max itn=2000)
+5        | 15.4277      | 15.4482      | 0.0204      
+  AM iter 1: itnlim hit in 0/393 LSMR frames (avg itn=227.4, max itn=255)
+  AM iter 2: itnlim hit in 0/278 LSMR frames (avg itn=1336.5, max itn=2000)
+  AM iter 3: itnlim hit in 0/150 LSMR frames (avg itn=1550.5, max itn=2000)
+  AM iter 4: itnlim hit in 0/102 LSMR frames (avg itn=1653.7, max itn=2000)
+  AM iter 5: itnlim hit in 0/90 LSMR frames (avg itn=1659.1, max itn=2000)
+  AM iter 6: itnlim hit in 0/89 LSMR frames (avg itn=1658.9, max itn=2000)
+  AM iter 7: itnlim hit in 0/95 LSMR frames (avg itn=1654.8, max itn=2000)
+  AM iter 8: itnlim hit in 0/100 LSMR frames (avg itn=1646.7, max itn=2000)
+  AM iter 9: itnlim hit in 0/105 LSMR frames (avg itn=1634.1, max itn=2000)
+  AM iter 10: itnlim hit in 0/106 LSMR frames (avg itn=1628.3, max itn=2000)
+10       | 14.8759      | 15.4983      | 0.6224      
+  AM iter 1: itnlim hit in 0/393 LSMR frames (avg itn=227.4, max itn=255)
+  AM iter 2: itnlim hit in 0/278 LSMR frames (avg itn=1336.5, max itn=2000)
+  AM iter 3: itnlim hit in 0/150 LSMR frames (avg itn=1550.5, max itn=2000)
+  AM iter 4: itnlim hit in 0/102 LSMR frames (avg itn=1653.7, max itn=2000)
+  AM iter 5: itnlim hit in 0/90 LSMR frames (avg itn=1659.1, max itn=2000)
+  AM iter 6: itnlim hit in 0/89 LSMR frames (avg itn=1658.9, max itn=2000)
+  AM iter 7: itnlim hit in 0/95 LSMR frames (avg itn=1654.8, max itn=2000)
+  AM iter 8: itnlim hit in 0/100 LSMR frames (avg itn=1646.7, max itn=2000)
+  AM iter 9: itnlim hit in 0/105 LSMR frames (avg itn=1634.1, max itn=2000)
+  AM iter 10: itnlim hit in 0/106 LSMR frames (avg itn=1628.3, max itn=2000)
+  AM iter 11: itnlim hit in 0/106 LSMR frames (avg itn=1629.0, max itn=2000)
+  AM iter 12: itnlim hit in 0/106 LSMR frames (avg itn=1630.0, max itn=2000)
+  AM iter 13: itnlim hit in 0/104 LSMR frames (avg itn=1632.3, max itn=2000)
+  AM iter 14: itnlim hit in 0/103 LSMR frames (avg itn=1632.5, max itn=2000)
+  AM iter 15: itnlim hit in 0/105 LSMR frames (avg itn=1632.7, max itn=2000)
+  AM iter 16: itnlim hit in 0/109 LSMR frames (avg itn=1632.0, max itn=2000)
+  AM iter 17: itnlim hit in 0/109 LSMR frames (avg itn=1630.9, max itn=2000)
+  AM iter 18: itnlim hit in 0/108 LSMR frames (avg itn=1628.9, max itn=2000)
+  AM iter 19: itnlim hit in 0/107 LSMR frames (avg itn=1627.0, max itn=2000)
+  AM iter 20: itnlim hit in 0/105 LSMR frames (avg itn=1626.9, max itn=2000)
+20       | 14.7617      | 15.4287      | 0.6670      
+
+=== Sub-experiment B: inline per-frame compare (maxit=20) ===
+Each line = one AM iteration.
+err_z = ||z_lsmr_op - z_bsl|| / ||z_bsl||  (solve error)
+err_s = ||s_lsmr_op - s_bsl|| / ||s_bsl||  (spectral coeff error)
+
+  AM iter 1 | compare mode | frames=393 | err_z: mean=1.19e-15 max=1.50e-15 | err_s: mean=1.36e-15 max=1.73e-15 | itn: mean=227.4 max=255 | istop7=0
+  AM iter 2 | compare mode | frames=393 | err_z: mean=3.66e-15 max=8.31e-15 | err_s: mean=2.38e-15 max=8.04e-15 | itn: mean=1336.0 max=2000 | istop7=0
+  AM iter 3 | compare mode | frames=393 | err_z: mean=3.80e-12 max=4.35e-10 | err_s: mean=8.21e-13 max=8.64e-11 | itn: mean=1550.6 max=2000 | istop7=0
+  AM iter 4 | compare mode | frames=393 | err_z: mean=5.49e-03 max=2.76e-01 | err_s: mean=8.47e-04 max=5.10e-02 | itn: mean=1653.5 max=2000 | istop7=0
+  AM iter 5 | compare mode | frames=393 | err_z: mean=2.82e-02 max=8.92e-01 | err_s: mean=5.22e-03 max=2.70e-01 | itn: mean=1659.1 max=2000 | istop7=0
+  AM iter 6 | compare mode | frames=393 | err_z: mean=3.98e-02 max=9.71e-01 | err_s: mean=9.03e-03 max=4.62e-01 | itn: mean=1658.6 max=2000 | istop7=0
+  AM iter 7 | compare mode | frames=393 | err_z: mean=4.51e-02 max=9.87e-01 | err_s: mean=1.17e-02 max=5.21e-01 | itn: mean=1654.8 max=2000 | istop7=0
+  AM iter 8 | compare mode | frames=393 | err_z: mean=4.81e-02 max=9.93e-01 | err_s: mean=1.33e-02 max=5.21e-01 | itn: mean=1646.9 max=2000 | istop7=0
+  AM iter 9 | compare mode | frames=393 | err_z: mean=5.06e-02 max=9.94e-01 | err_s: mean=1.44e-02 max=5.22e-01 | itn: mean=1634.6 max=2000 | istop7=0
+  AM iter 10 | compare mode | frames=393 | err_z: mean=5.23e-02 max=9.95e-01 | err_s: mean=1.48e-02 max=5.56e-01 | itn: mean=1628.5 max=2000 | istop7=0
+  AM iter 11 | compare mode | frames=393 | err_z: mean=5.33e-02 max=9.96e-01 | err_s: mean=1.45e-02 max=5.54e-01 | itn: mean=1629.1 max=2000 | istop7=0
+  AM iter 12 | compare mode | frames=393 | err_z: mean=5.44e-02 max=9.96e-01 | err_s: mean=1.43e-02 max=5.57e-01 | itn: mean=1630.3 max=2000 | istop7=0
+  AM iter 13 | compare mode | frames=393 | err_z: mean=5.56e-02 max=9.96e-01 | err_s: mean=1.46e-02 max=5.69e-01 | itn: mean=1632.2 max=2000 | istop7=0
+  AM iter 14 | compare mode | frames=393 | err_z: mean=5.64e-02 max=9.97e-01 | err_s: mean=1.48e-02 max=5.74e-01 | itn: mean=1633.3 max=2000 | istop7=0
+  AM iter 15 | compare mode | frames=393 | err_z: mean=5.72e-02 max=9.97e-01 | err_s: mean=1.48e-02 max=5.73e-01 | itn: mean=1633.2 max=2000 | istop7=0
+  AM iter 16 | compare mode | frames=393 | err_z: mean=5.77e-02 max=9.97e-01 | err_s: mean=1.47e-02 max=5.72e-01 | itn: mean=1632.7 max=2000 | istop7=0
+  AM iter 17 | compare mode | frames=393 | err_z: mean=5.80e-02 max=9.98e-01 | err_s: mean=1.46e-02 max=5.78e-01 | itn: mean=1632.3 max=2000 | istop7=0
+  AM iter 18 | compare mode | frames=393 | err_z: mean=5.84e-02 max=9.98e-01 | err_s: mean=1.43e-02 max=5.87e-01 | itn: mean=1631.8 max=2000 | istop7=0
+  AM iter 19 | compare mode | frames=393 | err_z: mean=5.82e-02 max=9.98e-01 | err_s: mean=1.40e-02 max=5.93e-01 | itn: mean=1631.0 max=2000 | istop7=0
+  AM iter 20 | compare mode | frames=393 | err_z: mean=5.75e-02 max=9.99e-01 | err_s: mean=1.39e-02 max=6.01e-01 | itn: mean=1629.5 max=2000 | istop7=0
+
+Final SDR (compare mode, uses backslash result): 14.7617 dB
+----------------------------------------------------------------------------------------------

@@ -1,0 +1,161 @@
+clc; clear; close all;
+
+%% --- Parameters ---
+num_seeds    = 10;
+tol          = 1e-9;
+itnlim       = 5000;
+kappas       = [1, 2, 3, 4, 5, 6, 7, 8, 10, 15, 20];
+sizes_N      = [100, 300, 600, 1000];  % N values (columns)
+aspect_ratio = 1.5;              % M = aspect_ratio * N (tall matrix)
+
+num_kappas = length(kappas);
+num_sizes  = length(sizes_N);
+
+%% --- Pre-Allocate ---
+all_iters_LSMR = NaN(num_seeds, num_kappas, num_sizes);
+all_iters_F2   = NaN(num_seeds, num_kappas, num_sizes);
+all_iters_F3   = NaN(num_seeds, num_kappas, num_sizes);
+
+%% --- Main Experiment Loop ---
+for si = 1 : num_sizes
+    N = sizes_N(si);
+    M = round(aspect_ratio * N);
+    for ki = 1 : num_kappas
+        kappa = kappas(ki);
+        for seed = 1 : num_seeds
+            rng(seed);  % different random realization each time
+            
+            % Generate matrix and problem
+            T_test = generate_matrix(M, N, kappa);
+            x_test = randn(N, 1);
+            y_test = T_test * x_test;
+            x_gt   = pinv(T_test) * y_test;
+            
+            % Spectral bounds via SVD (robust)
+            B_test = svds(T_test, 1, 'largest')^2;
+            A_test = svds(T_test, 1, 'smallestnz')^2;
+            lambda_F2 = 2 / (A_test + B_test);
+            lambda_F3 = sqrt(2 / (A_test^2 + B_test^2));
+            
+            % --- LSMR ---
+            [~, errors_lsmr, ~, ~] = mod_lsmr(T_test, y_test, 0, tol, tol, 1e7, itnlim, 0, false, x_gt);
+            all_iters_LSMR(seed, ki, si) = length(errors_lsmr);
+            
+            % --- F2 ---
+            [errors_F2, ~] = mod_f2(T_test, y_test, x_gt, lambda_F2, itnlim, tol);
+            all_iters_F2(seed, ki, si) = length(errors_F2);
+            
+            % --- F3 ---
+            [errors_F3, ~] = mod_f3(T_test, y_test, x_gt, lambda_F3, itnlim, tol);
+            all_iters_F3(seed, ki, si) = length(errors_F3);
+        end
+        fprintf('Done: N=%d, kappa=%d\n', N, kappa);
+    end
+end
+
+%% --- TABLE 1: Fixed size, varying kappa (mean +/- std) ---
+% Pick the largest size for the "main" table
+
+main_si = num_sizes;  % index of the size to show
+N_main  = sizes_N(main_si);
+M_main  = round(aspect_ratio * N_main);
+
+fprintf('\n\n=== Table 1: kappa vs iterations (size %d x %d, %d seeds) ===\n', M_main, N_main, num_seeds);
+
+for ki = 1 : num_kappas
+    lsmr_vals = all_iters_LSMR(:, ki, main_si);
+    f2_vals   = all_iters_F2(:, ki, main_si);
+    f3_vals   = all_iters_F3(:, ki, main_si);
+    
+    % Check if F3 hit the limit
+    if mean(f3_vals) >= itnlim
+        f3_str = '$>{5000}$';
+    else
+        f3_str = sprintf('$%.0f \\pm %.1f$', mean(f3_vals), std(f3_vals));
+    end
+    
+    fprintf('%d & $%.0f \\pm %.1f$ & $%.0f \\pm %.1f$ & %s \\\\\n', ...
+        kappas(ki), mean(lsmr_vals), std(lsmr_vals), ...
+        mean(f2_vals), std(f2_vals), f3_str);
+end
+
+%% --- Table 2: Fixed kappa, varying size ---
+fixed_kappa_idx = find(kappas == 5);  % pick kappa = 5
+fprintf('\n\n=== TABLE 2: Size vs iterations at kappa=%d (mean +/- std) ===\n', kappas(fixed_kappa_idx));
+fprintf('Copy these rows into your LaTeX table:\n\n');
+
+for si = 1 : num_sizes
+    N = sizes_N(si);
+    M = round(aspect_ratio * N);
+    
+    lsmr_vals = all_iters_LSMR(:, fixed_kappa_idx, si);
+    f2_vals   = all_iters_F2(:, fixed_kappa_idx, si);
+    f3_vals   = all_iters_F3(:, fixed_kappa_idx, si);
+    
+    if mean(f3_vals) >= itnlim
+        f3_str = '$>{5000}$';
+    else
+        f3_str = sprintf('$%.0f \\pm %.1f$', mean(f3_vals), std(f3_vals));
+    end
+    
+    fprintf('$%d \\times %d$ & $%.0f \\pm %.1f$ & $%.0f \\pm %.1f$ & %s \\\\\n', ...
+        M, N, mean(lsmr_vals), std(lsmr_vals), ...
+        mean(f2_vals), std(f2_vals), f3_str);
+end
+
+%% --- Analysis: Does convergence depend more on kappa or size? ---
+fprintf('\n\n=== ANALYSIS: kappa vs size dependence ===\n');
+
+% Variance across kappas (fix size, vary κ)
+for si = 1:num_sizes
+    mean_lsmr_across_kappa = squeeze(mean(all_iters_LSMR(:, :, si), 1));
+    fprintf('Size N=%d: LSMR iters range [%.0f, %.0f] across kappa=[%d..%d]\n', ...
+        sizes_N(si), min(mean_lsmr_across_kappa), max(mean_lsmr_across_kappa), ...
+        kappas(1), kappas(end));
+end
+
+% Variance across sizes (fix kappa, vary size)
+for ki = 1:num_kappas
+    mean_lsmr_across_size = squeeze(mean(all_iters_LSMR(:, ki, :), 1));
+    fprintf('kappa=%d: LSMR iters range [%.0f, %.0f] across sizes N=[%d..%d]\n', ...
+        kappas(ki), min(mean_lsmr_across_size), max(mean_lsmr_across_size), ...
+        sizes_N(1), sizes_N(end));
+end
+
+%% --- Plots ---
+% Plot 1: κ vs iterations for each size (LSMR only, to show size independence)
+
+figure('Position', [100 100 900 400]);
+colors = lines(num_sizes);
+for si = 1:num_sizes
+    mean_lsmr = squeeze(mean(all_iters_LSMR(:, :, si), 1));
+    std_lsmr  = squeeze(std(all_iters_LSMR(:, :, si), 0, 1));
+    errorbar(kappas, mean_lsmr, std_lsmr, '-o', 'LineWidth', 1.5, ...
+        'Color', colors(si,:), 'DisplayName', sprintf('N=%d', sizes_N(si)));
+    hold on;
+end
+grid on;
+xlabel('\kappa'); ylabel('Iterations to tol=10^{-9}');
+title('LSMR: Effect of \kappa across matrix sizes');
+legend('Location', 'northwest');
+saveas(gcf, 'lsmr_kappa_vs_size.png');
+
+% Plot 2: κ vs iterations, all 3 algorithms, single size
+figure('Position', [100 100 900 400]);
+si_plot = main_si;
+mean_lsmr = squeeze(mean(all_iters_LSMR(:, :, si_plot), 1));
+mean_f2   = squeeze(mean(all_iters_F2(:, :, si_plot), 1));
+mean_f3   = squeeze(mean(all_iters_F3(:, :, si_plot), 1));
+mean_f3(mean_f3 >= itnlim) = NaN;  % don't plot capped values
+
+semilogy(kappas, mean_lsmr, '-s', 'LineWidth', 2, 'DisplayName', 'LSMR');
+hold on;
+semilogy(kappas, mean_f2, '-o', 'LineWidth', 2, 'DisplayName', 'F2');
+semilogy(kappas, mean_f3, '-^', 'LineWidth', 2, 'DisplayName', 'F3');
+grid on;
+xlabel('\kappa'); ylabel('Iterations (log scale)');
+title(sprintf('All algorithms: \\kappa vs iterations (N=%d)', sizes_N(si_plot)));
+legend('Location', 'northwest');
+saveas(gcf, 'all_algos_kappa_vs_iters.png');
+
+fprintf('\nDone! Figures saved.\n');
