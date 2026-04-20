@@ -298,8 +298,6 @@ for i = 1:maxit
                 y_obs = mdata(mmask(:, n), n);
 
                 % ----------------------------------------------------------
-                %  Line 5 — solver switch
-                %
                 %  Special mode 'compare' (Task 1):
                 %    Computes ALL solvers for this frame and records the
                 %    error between backslash (reference) and lsmr_op.
