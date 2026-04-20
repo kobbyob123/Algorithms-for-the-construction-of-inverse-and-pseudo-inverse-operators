@@ -4,3 +4,5 @@
 # Ignore help folders
 *.claude
 clauded
+
+% ignore .fig files
