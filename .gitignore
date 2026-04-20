@@ -6,7 +6,7 @@
 .claude/
 clauded/
 .vscode/
-Audio Inpainting/benchmarks/ltfat-2.6.0/
+benchmarks/ltfat-2.6.0/
 
 # ignore .fig files
 *.fig
