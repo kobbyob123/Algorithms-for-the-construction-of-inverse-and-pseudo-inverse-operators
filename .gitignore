@@ -1,5 +1,6 @@
-# ignore pngs
+# ignore pngs & jpgs
 *.png
+*.jpg
 
 # Ignore help folders
 .claude/
@@ -11,3 +12,6 @@ clauded/
 
 # ignore json files
 *.json
+
+# ignore yourself
+.gitignore

@@ -11,7 +11,7 @@ The primary goal is to address the "bottleneck" of large matrix inversions in si
 * Improve the reconstruction speed of corrupted or missing audio sections.
 
 ## 🛠 Features
-* **Iterative Algorithms:** Implementation of selected iterative methods for (pseudo)inverse construction.
+* **Iterative Algorithms:** Implementations of selected iterative methods for (pseudo)inverse construction.
 * **Performance Benchmarking:** Comparative analysis of convergence speed and computational time vs. matrix size.
 * **Audio Inpainting:** A practical application using NMF-based optimization to fill missing sections in audio signals.
 * **Analysis Tools:** Scripts to evaluate the quality of reconstructed signals (SNR, MSE, etc.).
