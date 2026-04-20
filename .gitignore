@@ -4,7 +4,10 @@
 # Ignore help folders
 .claude/
 clauded/
-.vscode
+.vscode/
 
 # ignore .fig files
 *.fig
+
+# ignore json files
+*.json
