@@ -15,7 +15,7 @@ function [errors, x_final] = mod_f3(T_matrix, y, x_groundtruth, lambda, max_iter
     % This is more stable because of R^2 but at the cost of speed -- Theorem F3
     
     %[~, N] = size(T_matrix);
-    T_adj = @(x) T_matrix' * y;
+    T_adj = @(x) T_matrix' * x;
     
     % Compute R = T'*T
     R = T_matrix' * T_matrix;
